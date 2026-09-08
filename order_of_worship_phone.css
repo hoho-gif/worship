@@ -7,52 +7,105 @@
   --paper:      #ffffff;
   --ink:        #231f1a;
   --ink-soft:   #4a453c;
-  --gold:       #9c7f3f;   /* PDF表紙の「三鷹福音教会」「礼拝式次」の金茶色 */
+  --gold:       #9c7f3f;
   --gold-deep:  #7a6230;
   --gold-line:  #d9c99a;
-  --rubric-red: #c0392b;   /* PDF内の赤字（跪坐(起立)など） */
-  --serif-jp:   "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", "Georgia", serif;
+  --rubric-red: #c0392b;
+
+  --serif-jp:
+    "Hiragino Mincho ProN",
+    "Yu Mincho",
+    "Noto Serif JP",
+    "Georgia",
+    serif;
+
   --max-w:      680px;
 }
 
-*{ box-sizing: border-box; }
 
-html{ background: var(--paper); }
+/* ---------- 基本設定 ---------- */
+
+*{
+  box-sizing: border-box;
+}
+
+html{
+  background: var(--paper);
+  font-size: 100%;
+}
+
+body{
+  margin: 0;
+  font-family: var(--serif-jp);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+
+  /* 横方向にはみ出さないようにする */
+  overflow-x: hidden;
+}
+
 
 /* ---------- 文字サイズ切り替え（小・標準・大） ---------- */
-html{ font-size: 100%; }
-html.font-size-small{ font-size: 75%; }
-html.font-size-large{ font-size: 150%; }
+
+html.font-size-small{
+  font-size: 75%;
+}
+
+html.font-size-large{
+  font-size: 150%;
+}
+
+
+/* ---------- 文字サイズ切り替えボタン ---------- */
 
 .font-size-toggle{
   position: fixed;
   top: 12px;
   right: 12px;
   z-index: 100;
+
   display: flex;
   gap: 0.4em;
+
   background: var(--paper);
   border: 1px solid var(--gold-line);
   border-radius: 999px;
   padding: 0.3em;
+
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  font-size: 16px; /* 固定：文字サイズ切り替えの影響を受けないための基準値 */
+
+  /* 固定：文字サイズ切り替えの影響を受けない */
+  font-size: 16px;
 }
 
 .font-size-toggle button{
   font-family: var(--serif-jp);
   line-height: 1;
+
   padding: 0.45em 0.75em;
+
   border: none;
   border-radius: 999px;
+
   background: transparent;
   color: var(--gold-deep);
+
   cursor: pointer;
 }
 
-.font-size-toggle button[data-size="small"]{ font-size: 10.24px; }
-.font-size-toggle button[data-size="standard"]{ font-size: 13.6px; }
-.font-size-toggle button[data-size="large"]{ font-size: 20.8px; }
+.font-size-toggle button[data-size="small"]{
+  font-size: 10.24px;
+}
+
+.font-size-toggle button[data-size="standard"]{
+  font-size: 13.6px;
+}
+
+.font-size-toggle button[data-size="large"]{
+  font-size: 20.8px;
+}
 
 .font-size-toggle button:hover{
   background: var(--gold-line);
@@ -63,230 +116,552 @@ html.font-size-large{ font-size: 150%; }
   color: #ffffff;
 }
 
-@media (max-width: 560px){
-  .font-size-toggle{
-    top: 8px;
-    right: 8px;
-  }
-  .font-size-toggle button{
-    padding: 0.4em 0.6em;
-  }
-  .font-size-toggle button[data-size="small"]{ font-size: 8.96px; }
-  .font-size-toggle button[data-size="standard"]{ font-size: 12px; }
-  .font-size-toggle button[data-size="large"]{ font-size: 22.08px; }
-}
 
-body{
-  margin: 0;
-  font-family: var(--serif-jp);
-  color: var(--ink);
-  background: var(--paper);
-  line-height: 1.85;
-  -webkit-font-smoothing: antialiased;
-}
+/* ---------- メイン用紙 ---------- */
 
 .sheet{
+  width: 100%;
   max-width: var(--max-w);
+
   margin: 0 auto;
+
   background: var(--paper);
+
   padding: 4rem 2.25rem 6rem;
 }
 
+
 /* ---------- 表紙 ---------- */
+
 .cover{
   text-align: center;
+
   padding: 2rem 0 3.5rem;
+
   border-bottom: 1px solid var(--gold-line);
+
   margin-bottom: 2.5rem;
 }
 
+
 /* ロゴ画像を後で挿入するための枠 */
+
 .logo-placeholder{
   width: 140px;
   height: 170px;
+
   margin: 0 auto 1.5rem;
+
   border: 1px dashed var(--gold-line);
 }
 
+
 .cover .church-name{
   font-size: 1.4rem;
+
   letter-spacing: 0.35em;
+
   color: var(--gold);
+
   margin: 0 0 2rem;
+
   font-weight: 600;
 }
+
 
 .cover h1{
   font-size: 2.4rem;
+
   letter-spacing: 0.5em;
+
   margin: 0;
+
   padding-left: 0.5em;
+
   color: var(--gold);
+
   font-weight: 600;
 }
 
+
 /* ---------- 目次 ---------- */
+
 .toc{
   margin: 0 0 3.5rem;
+
   padding: 1.5rem 1.75rem;
+
   border: 1px solid var(--gold-line);
 }
+
 .toc ol{
   columns: 2;
+
   column-gap: 2rem;
+
   margin: 0;
+
   padding-left: 1.2em;
+
   font-size: 0.92rem;
 }
-.toc li{ break-inside: avoid; margin-bottom: 0.5em; }
+
+.toc li{
+  break-inside: avoid;
+
+  margin-bottom: 0.5em;
+}
+
 .toc a{
   color: var(--ink-soft);
+
   text-decoration: none;
+
   border-bottom: 1px dotted var(--gold-line);
 }
-.toc a:hover{ color: var(--gold-deep); }
+
+.toc a:hover{
+  color: var(--gold-deep);
+}
+
+
+/* ---------- アクセシビリティ用 ---------- */
 
 .visually-hidden{
   position: absolute;
-  width: 1px; height: 1px;
+
+  width: 1px;
+  height: 1px;
+
   overflow: hidden;
+
   clip: rect(0 0 0 0);
+
   white-space: nowrap;
 }
 
+
 /* ---------- セクション見出し ---------- */
+
 .order-section{
   margin: 0 0 3rem;
+
   padding-top: 1rem;
+
   scroll-margin-top: 1.5rem;
 }
 
 .order-section h2{
   font-size: 1.15rem;
+
   letter-spacing: 0.28em;
+
   color: var(--gold);
+
   margin: 0 0 1.25rem;
+
   padding-bottom: 0.5rem;
+
   border-bottom: 2px solid var(--gold-line);
 }
 
+
 /* ---------- 対話行（司式者 / 会衆 など） ---------- */
+
 .line{
   display: grid;
-  grid-template-columns: 5.5em 1fr;
+
+  /*
+    minmax(0, 1fr) にすることで、
+    本文が長くても画面幅を超えないようにする
+  */
+  grid-template-columns: 5.5em minmax(0, 1fr);
+
   gap: 0 1em;
+
   margin: 0 0 0.35em;
+
   align-items: baseline;
+
+  /*
+    Grid自体からの横はみ出しを防止
+  */
+  min-width: 0;
 }
+
+
+/* ---------- 話者名 ---------- */
 
 .line .speaker{
   margin: 0;
+
   font-size: 0.85rem;
+
   color: var(--gold-deep);
+
   font-weight: 600;
+
   letter-spacing: 0.15em;
+
   white-space: nowrap;
+
   padding-top: 0.15em;
+
+  min-width: 0;
 }
+
+
+/* ---------- 本文 ---------- */
 
 .line .txt{
   margin: 0;
+
   font-size: 1rem;
+
   color: var(--ink);
-  width: 310px;
+
+  /*
+    固定幅 310px を削除
+    → Gridの残り幅を自動的に使用
+  */
+  min-width: 0;
+
   max-width: 100%;
+
+  /*
+    長い文字列でも画面からはみ出さない
+  */
+  overflow-wrap: anywhere;
+
+  word-break: normal;
 }
+
+
+/* ---------- 太字本文 ---------- */
 
 .line .bold_txt{
   margin: 0;
+
   font-size: 1rem;
+
   font-weight: bold;
+
   color: var(--ink);
-  width: 310px;
+
+  min-width: 0;
+
   max-width: 100%;
+
+  overflow-wrap: anywhere;
+
+  word-break: normal;
 }
 
+
 /* ---------- ルビ ---------- */
-ruby{ ruby-align: center; }
+
+ruby{
+  ruby-align: center;
+}
+
 rt{
   font-size: 0.55em;
+
   color: var(--ink-soft);
+
   font-weight: 400;
+
   letter-spacing: 0;
 }
 
+
 /* ---------- 指示（起立・着席・跪坐など） ---------- */
-.rubric, .rubric-note{
+
+.rubric,
+.rubric-note{
   color: var(--rubric-red);
+
   font-size: 0.88rem;
+
   letter-spacing: 0.2em;
+
   text-align: right;
+
   margin: 0.5em 0 1em;
+
+  /*
+    長い指示も横にはみ出さない
+  */
+  overflow-wrap: anywhere;
 }
 
-/* ---------- 画像プレースホルダー（楽譜・ロゴなど後で差し替え） ---------- */
+
+/* ---------- 画像プレースホルダー ---------- */
+
 .image-placeholder{
   margin: 1em 0 1.5em;
+
   padding: 2.5em 1em;
+
   border: 1px dashed var(--gold-line);
+
   text-align: center;
+
   color: var(--gold-deep);
+
   font-size: 0.85rem;
+
   letter-spacing: 0.15em;
+
+  /*
+    画像・文字がはみ出さないようにする
+  */
+  max-width: 100%;
 }
 
+
 /* ---------- 賛美の何番・何節などの情報 ---------- */
-.song-info {
+
+.song-info{
   margin: 0.5em 0 0.75em;
+
   font-size: 1rem;
+
   color: var(--gold-deep);
+
   letter-spacing: 0.05em;
+
   white-space: pre-wrap;
+
   text-align: center;
-  font: bold;
+
+  /*
+    元コードの「font: bold;」ではなく、
+    正しく font-weight を指定
+  */
+  font-weight: bold;
+
+  /*
+    長い曲名などでもはみ出さない
+  */
+  overflow-wrap: anywhere;
 }
-.song-info:empty {
+
+.song-info:empty{
   display: none;
 }
 
+
 /* ---------- 聖書朗読プレースホルダー ---------- */
+
 .reading-placeholder{
   margin: 0.25em 0 1em;
+
   padding: 0.6em 0.9em;
+
   font-size: 0.9rem;
+
   color: var(--ink-soft);
+
   border-left: 2px solid var(--gold-line);
+
   white-space: pre-wrap;
+
+  /*
+    長い文章でもはみ出さない
+  */
+  overflow-wrap: anywhere;
 }
 
+
 /* ---------- フッター ---------- */
+
 .page-footer{
   margin-top: 4rem;
+
   padding-top: 1.5rem;
+
   border-top: 1px solid var(--gold-line);
+
   text-align: center;
+
   color: var(--gold);
+
   font-size: 0.85rem;
+
   letter-spacing: 0.3em;
 }
 
-/* ---------- レスポンシブ ---------- */
-@media (max-width: 560px){
-  .sheet{ padding: 2.5rem 1.25rem 4rem; }
-  .cover h1{ font-size: 1.9rem; letter-spacing: 0.35em; }
-  .cover .church-name{ letter-spacing: 0.25em; }
-  .toc ol{ columns: 1; }
-  .line{ grid-template-columns: 4.4em 1fr; }
+
+/* ---------- リンク ---------- */
+
+a{
+  color: inherit;
+
+  text-decoration: underline;
+
+  /*
+    URLなど長い文字列にも対応
+  */
+  overflow-wrap: anywhere;
 }
+
+
+/* ---------- レスポンシブ ---------- */
+
+@media (max-width: 560px){
+
+  .sheet{
+    width: 100%;
+
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+
+  .cover h1{
+    font-size: 1.9rem;
+
+    letter-spacing: 0.35em;
+  }
+
+
+  .cover .church-name{
+    letter-spacing: 0.25em;
+  }
+
+
+  .toc ol{
+    columns: 1;
+  }
+
+
+  /*
+    スマホでは話者名の幅を少し狭くする
+    本文には残りの幅をすべて使わせる
+  */
+  .line{
+    grid-template-columns: 4em minmax(0, 1fr);
+
+    gap: 0 0.6em;
+
+    width: 100%;
+
+    min-width: 0;
+  }
+
+
+  .line .speaker{
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
+
+  .line .txt,
+  .line .bold_txt{
+    width: auto;
+
+    max-width: 100%;
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+
+    word-break: normal;
+  }
+
+
+  .song-info{
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  .reading-placeholder{
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  .rubric,
+  .rubric-note{
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  .image-placeholder{
+    max-width: 100%;
+  }
+}
+
+
+/* ---------- さらに狭いスマホ ---------- */
+
+@media (max-width: 380px){
+
+  .sheet{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+
+  .line{
+    /*
+      非常に狭い画面では話者名をさらに縮小
+    */
+    grid-template-columns: 3.6em minmax(0, 1fr);
+
+    gap: 0 0.5em;
+  }
+
+
+  .line .speaker{
+    font-size: 0.78rem;
+
+    letter-spacing: 0.08em;
+  }
+
+
+  .cover h1{
+    font-size: 1.7rem;
+
+    letter-spacing: 0.25em;
+  }
+
+
+  .cover .church-name{
+    font-size: 1.15rem;
+
+    letter-spacing: 0.18em;
+  }
+}
+
 
 /* ---------- 印刷用 ---------- */
-@media print{
-  .sheet{ max-width: none; padding: 0 1cm; }
-  .order-section{ break-inside: avoid-page; }
-  a{ color: inherit; text-decoration: none; }
-}
 
-a {
+@media print{
+
+  .sheet{
+    max-width: none;
+
+    padding: 0 1cm;
+  }
+
+
+  .order-section{
+    break-inside: avoid-page;
+  }
+
+
+  a{
     color: inherit;
-    text-decoration: underline;
+
+    text-decoration: none;
+  }
 }
