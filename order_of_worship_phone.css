@@ -193,7 +193,7 @@ body{
   margin: 0;
   font-size: 1rem;
   color: var(--ink);
-  width: 350px;
+  width: 310px;
   max-width: 100%;
 }
 
@@ -202,7 +202,7 @@ body{
   font-size: 1rem;
   font-weight: bold;
   color: var(--ink);
-  width: 350px;
+  width: 310px;
   max-width: 100%;
 }
 
