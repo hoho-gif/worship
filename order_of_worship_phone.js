@@ -53,7 +53,9 @@
 
   /** 英語ページではファイル名に "_en" を付ける */
   function getLanguageSuffix() {
-    return document.documentElement.lang.toLowerCase() === "en" ? "_en" : "";
+    var language = document.documentElement.lang.toLowerCase();
+    var pageName = window.location.pathname.split("/").pop().toLowerCase();
+    return language === "en" || pageName === "order_of_worship_en.html" ? "_en" : "";
   }
 
   /* ---------- 賛美の楽譜画像 ---------- */
