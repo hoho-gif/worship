@@ -319,17 +319,11 @@ html.font-size-large{
   font-size: 1rem;
 
   color: var(--ink);
-<<<<<<< HEAD
-  width: 350px;
-=======
-
   /*
-    固定幅 310px を削除
+    固定幅を削除
     → Gridの残り幅を自動的に使用
   */
   min-width: 0;
-
->>>>>>> a37fc0249ead8c7cb5ca6a6902f8def30a54963a
   max-width: 100%;
 
   /*
@@ -351,13 +345,7 @@ html.font-size-large{
   font-weight: bold;
 
   color: var(--ink);
-<<<<<<< HEAD
-  width: 350px;
-=======
-
   min-width: 0;
-
->>>>>>> a37fc0249ead8c7cb5ca6a6902f8def30a54963a
   max-width: 100%;
 
   overflow-wrap: anywhere;
