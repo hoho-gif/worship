@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 from datetime import datetime
 from openpyxl import load_workbook
@@ -117,6 +118,26 @@ def extract_hymn_name(text):
     text = text.split("(")[0]
 
     return text.strip()
+
+
+# ==========================================
+# 数字の先頭ゼロを無視して比較するための正規化
+# ==========================================
+
+def normalize_for_match(text):
+
+    # 文字列中の数字のかたまりを、
+    # 先頭ゼロを取り除いた数値に置き換える
+    #
+    # 例：
+    # "hymn_029" → "hymn_29"
+    # "psalm007A" → "psalm7A"
+
+    return re.sub(
+        r"\d+",
+        lambda m: str(int(m.group())),
+        text
+    )
 
 
 # ==========================================
@@ -369,7 +390,7 @@ for row in ws.iter_rows(
         # ----------------------------------
         # 検索するファイル名
         # ----------------------------------
-        
+
         # 例：
         #
         # 聖歌75
@@ -479,9 +500,10 @@ for row in ws.iter_rows(
 
             # ==================================
             # ファイル名が一致
+            # （数字の先頭ゼロの有無を無視して比較する）
             # ==================================
 
-            if name_without_extension == search_name:
+            if normalize_for_match(name_without_extension) == normalize_for_match(search_name):
 
 
                 source_file = os.path.join(
