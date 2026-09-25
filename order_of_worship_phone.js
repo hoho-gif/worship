@@ -5,15 +5,13 @@
    （小・標準・大）も扱う。
 
    ファイルの置き場所（このルールに合わせてください）:
-     song1/YYYY-MM-DD.jpg … 賛美［１］の楽譜
-     song1/YYYY-MM-DD.txt … 賛美［１］の何番・何節などの情報（任意）
-     song2/YYYY-MM-DD.jpg … 賛美［２］の楽譜
-     song2/YYYY-MM-DD.txt … 賛美［２］の何番・何節などの情報（任意）
+    日本語: song1/YYYY-MM-DD.jpg / song1/YYYY-MM-DD.txt
+    英語:   song1/YYYY-MM-DD_en.jpg / song1/YYYY-MM-DD_en.txt
+    （song2 も同じ規則）
 
-     read1/YYYY-MM-DD.html または read1/YYYY-MM-DD.txt … 旧約聖書からの朗読
-     read2/YYYY-MM-DD.html または read2/YYYY-MM-DD.txt … 詩篇からの交読
-     read3/YYYY-MM-DD.html または read3/YYYY-MM-DD.txt … 使徒書からの朗読
-     read4/YYYY-MM-DD.html または read4/YYYY-MM-DD.txt … 福音書からの朗読
+    日本語: read1/YYYY-MM-DD.html または read1/YYYY-MM-DD.txt
+    英語:   read1/YYYY-MM-DD_en.html または read1/YYYY-MM-DD_en.txt
+    （read2〜read4 も同じ規則）
 
    朗読は .html を優先して探し、無ければ同じ日付の .txt を探します
    （.txt の場合、改行はそのまま改行として表示されます）。
@@ -53,17 +51,23 @@
     return yyyy + "-" + mm + "-" + dd;
   }
 
+  /** 英語ページではファイル名に "_en" を付ける */
+  function getLanguageSuffix() {
+    return document.documentElement.lang.toLowerCase() === "en" ? "_en" : "";
+  }
+
   /* ---------- 賛美の楽譜画像 ---------- */
 
   function setSongImages(dateStr) {
     var song1 = document.getElementById("song1-img");
     var song2 = document.getElementById("song2-img");
+    var suffix = getLanguageSuffix();
 
     if (song1) {
-      song1.src = "song1/" + dateStr + ".jpg";
+      song1.src = "song1/" + dateStr + suffix + ".jpg";
     }
     if (song2) {
-      song2.src = "song2/" + dateStr + ".jpg";
+      song2.src = "song2/" + dateStr + suffix + ".jpg";
     }
   }
 
@@ -89,12 +93,13 @@
       { folder: "song1", elementId: "song1-info" },
       { folder: "song2", elementId: "song2-info" }
     ];
+    var suffix = getLanguageSuffix();
 
     songs.forEach(function (item) {
       var el = document.getElementById(item.elementId);
       if (!el) return;
 
-      var url = item.folder + "/" + dateStr + ".txt";
+      var url = item.folder + "/" + dateStr + suffix + ".txt";
       tryFetchText(url).then(function (text) {
         if (text === null) return; // 見つからなければ何もしない
         el.textContent = text;
@@ -106,8 +111,9 @@
 
   /** .html を優先して探し、無ければ .txt を探す */
   function loadReading(folder, dateStr) {
-    var htmlUrl = folder + "/" + dateStr + ".html";
-    var txtUrl = folder + "/" + dateStr + ".txt";
+    var suffix = getLanguageSuffix();
+    var htmlUrl = folder + "/" + dateStr + suffix + ".html";
+    var txtUrl = folder + "/" + dateStr + suffix + ".txt";
 
     return tryFetchText(htmlUrl).then(function (htmlContent) {
       if (htmlContent !== null) {
@@ -190,6 +196,25 @@
     });
   }
 
+  /* ---------- 言語切り替え ---------- */
+
+  function initLanguageToggle() {
+    var links = document.querySelectorAll(".language-toggle a");
+
+    links.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        var currentHash = window.location.hash;
+        if (!currentHash) return;
+
+        var target = link.getAttribute("href");
+        if (!target) return;
+
+        event.preventDefault();
+        window.location.href = target + currentHash;
+      });
+    });
+  }
+
   /* ---------- まとめて実行 ---------- */
 
   function setWeeklyContent() {
@@ -204,6 +229,7 @@
   function init() {
     setWeeklyContent();
     initFontSizeToggle();
+    initLanguageToggle();
   }
 
   if (document.readyState === "loading") {

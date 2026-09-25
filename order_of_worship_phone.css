@@ -60,6 +60,42 @@ html.font-size-large{
 
 /* ---------- 文字サイズ切り替えボタン ---------- */
 
+.language-toggle{
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+
+  display: flex;
+  gap: 0.2em;
+
+  background: var(--paper);
+  border: 1px solid var(--gold-line);
+  border-radius: 999px;
+  padding: 0.3em;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  font-size: 16px;
+}
+
+.language-toggle a{
+  color: var(--gold-deep);
+  text-decoration: none;
+  line-height: 1;
+  padding: 0.45em 0.75em;
+  border-radius: 999px;
+}
+
+.language-toggle a:hover{
+  background: var(--gold-line);
+}
+
+.language-toggle a.active{
+  background: var(--gold);
+  color: #ffffff;
+}
+
 .font-size-toggle{
   position: fixed;
   top: 12px;
