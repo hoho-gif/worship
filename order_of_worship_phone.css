@@ -76,11 +76,13 @@ html.font-size-large{
 }
 
 .language-toggle a{
+  font-family: var(--serif-jp);
   color: var(--gold-deep);
   text-decoration: none;
   line-height: 1;
   padding: 0.45em 0.75em;
   border-radius: 999px;
+  cursor: pointer;
 }
 
 .language-toggle a:hover{
