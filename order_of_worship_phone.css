@@ -544,7 +544,12 @@ a{
   .sheet{
     width: 100%;
 
-    padding: 2.5rem 1.25rem 4rem;
+    padding: 6rem 1.25rem 4rem;
+  }
+
+
+  .font-size-toggle{
+    top: 56px;
   }
 
 
