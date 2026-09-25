@@ -109,7 +109,7 @@
 
   /* ---------- 聖書朗読箇所 ---------- */
 
-  /** .html を優先して探し、無ければ .txt を探す */
+  /** 英語は .html のみ、日本語は .html を優先して .txt にフォールバックする */
   function loadReading(folder, dateStr) {
     var suffix = getLanguageSuffix();
     var htmlUrl = folder + "/" + dateStr + suffix + ".html";
@@ -118,6 +118,9 @@
     return tryFetchText(htmlUrl).then(function (htmlContent) {
       if (htmlContent !== null) {
         return { type: "html", content: htmlContent };
+      }
+      if (suffix === "_en") {
+        return null;
       }
       return tryFetchText(txtUrl).then(function (txtContent) {
         if (txtContent !== null) {
