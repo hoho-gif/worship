@@ -201,19 +201,44 @@
 
   /* ---------- 言語切り替え ---------- */
 
+  /**
+   * 現在、画面の一番上に表示されているセクションのidを返す。
+   * まだ最初のセクションより上（表紙・目次あたり）にいる場合はnullを返す。
+   */
+  function getCurrentSectionId() {
+    var sections = document.querySelectorAll(".order-section[id]");
+    var headerOffset = 80; // 上部固定要素（文字サイズ切り替えなど）を考慮した余白
+    var currentId = null;
+
+    sections.forEach(function (section) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top - headerOffset <= 0) {
+        currentId = section.id;
+      }
+    });
+
+    return currentId;
+  }
+
   function initLanguageToggle() {
     var links = document.querySelectorAll(".language-toggle a");
 
     links.forEach(function (link) {
       link.addEventListener("click", function (event) {
-        var currentHash = window.location.hash;
-        if (!currentHash) return;
-
         var target = link.getAttribute("href");
         if (!target) return;
 
+        // 既にURLに#セクションIDが付いていればそれを優先し、
+        // 無ければ今スクロールしている位置から現在のセクションを判定する
+        var hash = window.location.hash || (function () {
+          var id = getCurrentSectionId();
+          return id ? "#" + id : "";
+        })();
+
+        if (!hash) return; // トップ付近ならそのまま通常のリンク遷移
+
         event.preventDefault();
-        window.location.href = target + currentHash;
+        window.location.href = target + hash;
       });
     });
   }
