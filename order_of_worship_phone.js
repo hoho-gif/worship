@@ -192,7 +192,16 @@
       var btn = event.target.closest("button[data-size]");
       if (!btn) return;
       var size = btn.getAttribute("data-size");
+      var currentSectionId = getCurrentSectionId();
+      var currentSection = currentSectionId ? document.getElementById(currentSectionId) : null;
+      var sectionTop = currentSection ? currentSection.getBoundingClientRect().top : null;
       applyFontSize(size);
+      if (currentSection) {
+        window.requestAnimationFrame(function () {
+          var updatedTop = currentSection.getBoundingClientRect().top;
+          window.scrollBy(0, updatedTop - sectionTop);
+        });
+      }
       try {
         localStorage.setItem(FONT_SIZE_STORAGE_KEY, size);
       } catch (e) {
