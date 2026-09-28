@@ -65,34 +65,25 @@ html.font-size-large{
   top: 12px;
   left: 12px;
   z-index: 100;
-  display: flex;
-  gap: 0.2em;
   background: var(--paper);
   border: 1px solid var(--gold-line);
-  border-radius: 999px;
-  padding: 0.3em;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   font-size: 16px;
   transition: transform 180ms ease, opacity 180ms ease;
 }
 
-.language-toggle a{
+.language-toggle select{
+  display: block;
   font-family: var(--serif-jp);
   color: var(--gold-deep);
-  text-decoration: none;
-  line-height: 1;
-  padding: 0.45em 0.75em;
-  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 0.45em 2em 0.45em 0.75em;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
   cursor: pointer;
-}
-
-.language-toggle a:hover{
-  background: var(--gold-line);
-}
-
-.language-toggle a.active{
-  background: var(--gold);
-  color: #ffffff;
 }
 
 .font-size-toggle{

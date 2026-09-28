@@ -261,22 +261,19 @@
   }
 
   function initLanguageToggle() {
-    var links = document.querySelectorAll(".language-toggle a");
+    var selector = document.querySelector(".language-toggle select");
+    if (!selector) return;
 
-    links.forEach(function (link) {
-      link.addEventListener("click", function (event) {
-        var target = link.getAttribute("href");
-        if (!target) return;
+    selector.addEventListener("change", function () {
+      var target = selector.value;
+      if (!target) return;
 
-        var currentSectionId = getCurrentSectionId();
-        if (!currentSectionId) return; // トップ付近ならそのまま通常のリンク遷移
-
+      var currentSectionId = getCurrentSectionId();
+      if (currentSectionId) {
         var currentSection = document.getElementById(currentSectionId);
         var sectionOffset = currentSection
           ? -currentSection.getBoundingClientRect().top
           : 0;
-
-        event.preventDefault();
         try {
           sessionStorage.setItem("orderOfWorshipLanguagePosition", JSON.stringify({
             sectionId: currentSectionId,
@@ -286,7 +283,9 @@
           /* sessionStorageが使えない環境ではセクション位置のみ引き継ぐ */
         }
         window.location.href = target + "#" + currentSectionId;
-      });
+      } else {
+        window.location.href = target;
+      }
     });
   }
 
