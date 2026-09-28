@@ -235,6 +235,7 @@
 
   function initScrollControls() {
     var html = document.documentElement;
+    var alwaysVisibleThreshold = 120;
     var lastScrollY = window.scrollY;
     var framePending = false;
 
@@ -249,10 +250,10 @@
 
       window.requestAnimationFrame(function () {
         var currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollY) {
-          html.classList.add("scroll-controls-hidden");
-        } else if (currentScrollY < lastScrollY) {
+        if (currentScrollY <= alwaysVisibleThreshold || currentScrollY < lastScrollY) {
           html.classList.remove("scroll-controls-hidden");
+        } else if (currentScrollY > lastScrollY) {
+          html.classList.add("scroll-controls-hidden");
         }
         lastScrollY = currentScrollY;
         framePending = false;
