@@ -235,7 +235,7 @@
 
   function initScrollControls() {
     var html = document.documentElement;
-    var alwaysVisibleThreshold = 120;
+    var alwaysVisibleThreshold = 320;
     var lastScrollY = window.scrollY;
     var framePending = false;
 
