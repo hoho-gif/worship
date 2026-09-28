@@ -231,6 +231,35 @@
     return currentId;
   }
 
+  var syncScrollControls = function () {};
+
+  function initScrollControls() {
+    var html = document.documentElement;
+    var lastScrollY = window.scrollY;
+    var framePending = false;
+
+    syncScrollControls = function () {
+      lastScrollY = window.scrollY;
+      html.classList.remove("scroll-controls-hidden");
+    };
+
+    window.addEventListener("scroll", function () {
+      if (framePending) return;
+      framePending = true;
+
+      window.requestAnimationFrame(function () {
+        var currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollY) {
+          html.classList.add("scroll-controls-hidden");
+        } else if (currentScrollY < lastScrollY) {
+          html.classList.remove("scroll-controls-hidden");
+        }
+        lastScrollY = currentScrollY;
+        framePending = false;
+      });
+    }, { passive: true });
+  }
+
   function initLanguageToggle() {
     var links = document.querySelectorAll(".language-toggle a");
 
@@ -276,6 +305,7 @@
       if (!section) return;
       var sectionTop = section.getBoundingClientRect().top + window.scrollY;
       window.scrollTo(0, sectionTop + savedPosition.offset);
+      syncScrollControls();
     }
 
     if (document.readyState === "complete") {
@@ -302,6 +332,7 @@
     setWeeklyContent();
     initFontSizeToggle();
     initLanguageToggle();
+    initScrollControls();
     restoreLanguageScrollPosition();
   }
 

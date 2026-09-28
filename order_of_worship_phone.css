@@ -73,6 +73,7 @@ html.font-size-large{
   padding: 0.3em;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   font-size: 16px;
+  transition: transform 180ms ease, opacity 180ms ease;
 }
 
 .language-toggle a{
@@ -112,6 +113,28 @@ html.font-size-large{
 
   /* 固定：文字サイズ切り替えの影響を受けない */
   font-size: 16px;
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+html.scroll-controls-hidden .language-toggle,
+html.scroll-controls-hidden .font-size-toggle{
+  transform: translateY(calc(-100% - 20px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.scroll-controls-hidden .language-toggle:focus-within,
+html.scroll-controls-hidden .font-size-toggle:focus-within{
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .language-toggle,
+  .font-size-toggle{
+    transition: none;
+  }
 }
 
 .font-size-toggle button{
