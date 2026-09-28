@@ -239,19 +239,52 @@
         var target = link.getAttribute("href");
         if (!target) return;
 
-        // 既にURLに#セクションIDが付いていればそれを優先し、
-        // 無ければ今スクロールしている位置から現在のセクションを判定する
-        var hash = window.location.hash || (function () {
-          var id = getCurrentSectionId();
-          return id ? "#" + id : "";
-        })();
+        var currentSectionId = getCurrentSectionId();
+        if (!currentSectionId) return; // トップ付近ならそのまま通常のリンク遷移
 
-        if (!hash) return; // トップ付近ならそのまま通常のリンク遷移
+        var currentSection = document.getElementById(currentSectionId);
+        var sectionOffset = currentSection
+          ? -currentSection.getBoundingClientRect().top
+          : 0;
 
         event.preventDefault();
-        window.location.href = target + hash;
+        try {
+          sessionStorage.setItem("orderOfWorshipLanguagePosition", JSON.stringify({
+            sectionId: currentSectionId,
+            offset: sectionOffset
+          }));
+        } catch (e) {
+          /* sessionStorageが使えない環境ではセクション位置のみ引き継ぐ */
+        }
+        window.location.href = target + "#" + currentSectionId;
       });
     });
+  }
+
+  function restoreLanguageScrollPosition() {
+    var savedPosition = null;
+    try {
+      savedPosition = JSON.parse(sessionStorage.getItem("orderOfWorshipLanguagePosition"));
+      sessionStorage.removeItem("orderOfWorshipLanguagePosition");
+    } catch (e) {
+      return;
+    }
+    if (!savedPosition || !savedPosition.sectionId) return;
+
+    function restore() {
+      var section = document.getElementById(savedPosition.sectionId);
+      if (!section) return;
+      var sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo(0, sectionTop + savedPosition.offset);
+    }
+
+    if (document.readyState === "complete") {
+      window.requestAnimationFrame(restore);
+    } else {
+      window.addEventListener("load", function () {
+        window.requestAnimationFrame(restore);
+      }, { once: true });
+    }
   }
 
   /* ---------- まとめて実行 ---------- */
@@ -269,6 +302,7 @@
     setWeeklyContent();
     initFontSizeToggle();
     initLanguageToggle();
+    restoreLanguageScrollPosition();
   }
 
   if (document.readyState === "loading") {
