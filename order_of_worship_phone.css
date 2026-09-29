@@ -358,6 +358,10 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
   min-width: 0;
 }
 
+.line .speaker.compact{
+  letter-spacing: 0;
+}
+
 
 /* ---------- 本文 ---------- */
 
@@ -669,6 +673,10 @@ a{
     font-size: 0.78rem;
 
     letter-spacing: 0.08em;
+  }
+
+  .line .speaker.compact{
+    letter-spacing: 0;
   }
 
 
