@@ -210,6 +210,63 @@
     });
   }
 
+  function initAnnotations() {
+    var activeButton = null;
+
+    function positionPopover(button) {
+      var popover = button.nextElementSibling;
+      var buttonRect = button.getBoundingClientRect();
+      var popoverRect = popover.getBoundingClientRect();
+      var edge = 16;
+      var left = Math.max(edge, Math.min(buttonRect.right - popoverRect.width, window.innerWidth - popoverRect.width - edge));
+      var top = buttonRect.bottom + 8;
+      if (top + popoverRect.height > window.innerHeight - edge) {
+        top = Math.max(edge, buttonRect.top - popoverRect.height - 8);
+      }
+      popover.style.left = left + "px";
+      popover.style.top = top + "px";
+    }
+
+    function closeAnnotations(exceptButton) {
+      document.querySelectorAll(".info-button").forEach(function (item) {
+        if (item === exceptButton) return;
+        item.setAttribute("aria-expanded", "false");
+        item.nextElementSibling.hidden = true;
+      });
+      if (activeButton !== exceptButton) activeButton = null;
+    }
+
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest(".info-button");
+      closeAnnotations(button);
+      if (!button) return;
+      var popover = button.nextElementSibling;
+      var isOpening = button.getAttribute("aria-expanded") !== "true";
+      button.setAttribute("aria-expanded", String(isOpening));
+      popover.hidden = !isOpening;
+
+      if (isOpening) {
+        activeButton = button;
+        positionPopover(button);
+      } else {
+        activeButton = null;
+      }
+    });
+
+    window.addEventListener("scroll", function () {
+      if (activeButton) positionPopover(activeButton);
+    }, { passive: true });
+
+    window.addEventListener("resize", function () {
+      if (activeButton) positionPopover(activeButton);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      closeAnnotations(null);
+    });
+  }
+
   /* ---------- 言語切り替え ---------- */
 
   /**
@@ -331,6 +388,7 @@
   function init() {
     setWeeklyContent();
     initFontSizeToggle();
+    initAnnotations();
     initLanguageToggle();
     initScrollControls();
     restoreLanguageScrollPosition();
