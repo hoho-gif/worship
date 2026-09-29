@@ -391,6 +391,17 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
   margin: 0.6em 0 1em;
 }
 
+.annotation-aligned{
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.annotation-aligned .response-text{
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 
 /* ---------- 対話行（司式者 / 会衆 など） ---------- */
 
