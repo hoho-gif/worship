@@ -316,6 +316,8 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
 .info-button{
   display: inline-grid;
   place-items: center;
+  flex: none;
+  appearance: none;
   width: 1.25em;
   height: 1.25em;
   margin-left: 0.35em;
@@ -382,8 +384,11 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
 }
 
 .annotation-row{
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 0.2em;
   margin: 0.6em 0 1em;
-  text-align: right;
 }
 
 
