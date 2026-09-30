@@ -412,7 +412,7 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
     minmax(0, 1fr) にすることで、
     本文が長くても画面幅を超えないようにする
   */
-  grid-template-columns: 3.8em minmax(0, 1fr);
+  grid-template-columns: 4em minmax(0, 1fr);
 
   gap: 0 1em;
 
