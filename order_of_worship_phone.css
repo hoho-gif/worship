@@ -412,7 +412,7 @@ html.scroll-controls-hidden .font-size-toggle:focus-within{
     minmax(0, 1fr) にすることで、
     本文が長くても画面幅を超えないようにする
   */
-  grid-template-columns: 4em minmax(0, 1fr);
+  grid-template-columns: 3.5em minmax(0, 1fr);
 
   gap: 0 1em;
 
@@ -677,7 +677,7 @@ a{
     本文には残りの幅をすべて使わせる
   */
   .line{
-    grid-template-columns: 3em minmax(0, 1fr);
+    grid-template-columns: 4.5em minmax(0, 1fr);
 
     gap: 0 0.6em;
 
@@ -752,7 +752,7 @@ a{
     /*
       非常に狭い画面では話者名をさらに縮小
     */
-    grid-template-columns: 2.6em minmax(0, 1fr);
+    grid-template-columns: 4.5em minmax(0, 1fr);
 
     gap: 0 0.5em;
   }
