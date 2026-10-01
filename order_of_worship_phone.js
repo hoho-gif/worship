@@ -51,10 +51,11 @@
     return yyyy + "-" + mm + "-" + dd;
   }
 
-  /** 英語ページではファイル名に "_en" を付ける */
+  /** 言語別ページではファイル名に対応する接尾辞を付ける */
   function getLanguageSuffix() {
     var language = document.documentElement.lang.toLowerCase();
     var pageName = window.location.pathname.split("/").pop().toLowerCase();
+    if (pageName === "order_of_worship_ro.html") return "_ro";
     return language === "en" || pageName === "order_of_worship_en.html" ? "_en" : "";
   }
 
