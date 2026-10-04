@@ -296,13 +296,25 @@
     var alwaysVisibleThreshold = 320;
     var lastScrollY = window.scrollY;
     var framePending = false;
+    var languageIdleTimer;
+
+    function showLanguageToggleAndScheduleHide() {
+      html.classList.remove("language-toggle-idle-hidden");
+      window.clearTimeout(languageIdleTimer);
+      languageIdleTimer = window.setTimeout(function () {
+        html.classList.add("language-toggle-idle-hidden");
+      }, 5000);
+    }
 
     syncScrollControls = function () {
       lastScrollY = window.scrollY;
       html.classList.remove("scroll-controls-hidden");
     };
 
+    showLanguageToggleAndScheduleHide();
+
     window.addEventListener("scroll", function () {
+      showLanguageToggleAndScheduleHide();
       if (framePending) return;
       framePending = true;
 

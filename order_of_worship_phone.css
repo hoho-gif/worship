@@ -114,7 +114,14 @@ html.scroll-controls-hidden .font-size-toggle{
   pointer-events: none;
 }
 
+html.language-toggle-idle-hidden .language-toggle{
+  transform: translateY(calc(-100% - 20px));
+  opacity: 0;
+  pointer-events: none;
+}
+
 html.scroll-controls-hidden .language-toggle:focus-within,
+html.language-toggle-idle-hidden .language-toggle:focus-within,
 html.scroll-controls-hidden .font-size-toggle:focus-within{
   transform: translateY(0);
   opacity: 1;
