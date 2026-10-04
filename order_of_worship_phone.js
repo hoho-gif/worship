@@ -296,14 +296,14 @@
     var alwaysVisibleThreshold = 320;
     var lastScrollY = window.scrollY;
     var framePending = false;
-    var languageIdleTimer;
+    var controlsIdleTimer;
 
-    function showLanguageToggleAndScheduleHide() {
-      html.classList.remove("language-toggle-idle-hidden");
-      window.clearTimeout(languageIdleTimer);
-      languageIdleTimer = window.setTimeout(function () {
-        html.classList.add("language-toggle-idle-hidden");
-      }, 5000);
+    function showScrollControlsAndScheduleHide() {
+      html.classList.remove("scroll-controls-idle-hidden");
+      window.clearTimeout(controlsIdleTimer);
+      controlsIdleTimer = window.setTimeout(function () {
+        html.classList.add("scroll-controls-idle-hidden");
+      }, 3000);
     }
 
     syncScrollControls = function () {
@@ -311,10 +311,10 @@
       html.classList.remove("scroll-controls-hidden");
     };
 
-    showLanguageToggleAndScheduleHide();
+    showScrollControlsAndScheduleHide();
 
     window.addEventListener("scroll", function () {
-      showLanguageToggleAndScheduleHide();
+      showScrollControlsAndScheduleHide();
       if (framePending) return;
       framePending = true;
 
