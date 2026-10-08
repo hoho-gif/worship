@@ -226,9 +226,10 @@ html.scroll-controls-idle-hidden .font-size-toggle:focus-within{
 }
 
 .cover .service-update-date{
-  margin: -1.25rem 0 1rem;
+  margin: 0 0 1.25rem;
   color: var(--ink-soft);
   font-size: 0.9rem;
+  text-align: right;
 }
 
 
