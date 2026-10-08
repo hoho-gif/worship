@@ -51,6 +51,28 @@
     return yyyy + "-" + mm + "-" + dd;
   }
 
+  function setServiceUpdateDate(date) {
+    var dateElement = document.getElementById("service-update-date");
+    if (!dateElement) return;
+
+    var dateStr = formatDate(date);
+    var pageName = window.location.pathname.split("/").pop().toLowerCase();
+    dateElement.dateTime = dateStr;
+
+    if (pageName === "order_of_worship_en.html") {
+      dateElement.textContent = "Updated: " + date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+    } else if (pageName === "order_of_worship_ro.html") {
+      dateElement.textContent = "Koushinbi: " + dateStr;
+    } else {
+      dateElement.textContent = "更新日：" + date.getFullYear() + "年" +
+        (date.getMonth() + 1) + "月" + date.getDate() + "日";
+    }
+  }
+
   /** 言語別ページではファイル名に対応する接尾辞を付ける */
   function getLanguageSuffix() {
     var language = document.documentElement.lang.toLowerCase();
@@ -393,6 +415,7 @@
     var sunday = getUpcomingSunday(new Date());
     var dateStr = formatDate(sunday);
 
+    setServiceUpdateDate(sunday);
     setSongImages(dateStr);
     setSongInfo(dateStr);
     setReadings(dateStr);

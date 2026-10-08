@@ -225,6 +225,12 @@ html.scroll-controls-idle-hidden .font-size-toggle:focus-within{
   font-weight: 600;
 }
 
+.cover .service-update-date{
+  margin: -1.25rem 0 1rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
 
 .cover h1{
   font-size: 2.4rem;
