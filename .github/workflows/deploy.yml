@@ -16,7 +16,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./site/
+          local-dir: ./
           server-dir: /public_html/sceptrade.com/
           state-name: .ftp-deploy-sync-state-site.json
 
@@ -27,6 +27,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER_LITURGY }}
           username: ${{ secrets.FTP_USERNAME_LITURGY }}
           password: ${{ secrets.FTP_PASSWORD_LITURGY }}
-          local-dir: ./liturgy/
+          local-dir: ./
           server-dir: /public_html/mitakachurch.com/liturgy/
           state-name: .ftp-deploy-sync-state-liturgy.json
