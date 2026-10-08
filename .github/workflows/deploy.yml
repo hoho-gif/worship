@@ -17,7 +17,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
+          local-dir: ./site/
           server-dir: /public_html/sceptrade.com/
           state-name: .ftp-deploy-sync-state-site.json
 
