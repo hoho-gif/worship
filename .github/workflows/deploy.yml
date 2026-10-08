@@ -13,6 +13,7 @@ jobs:
       - name: Deploy site
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          protocol: ftps
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
@@ -23,6 +24,7 @@ jobs:
       - name: Deploy liturgy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          protocol: ftps
           server: ${{ secrets.FTP_SERVER_LITURGY }}
           username: ${{ secrets.FTP_USERNAME_LITURGY }}
           password: ${{ secrets.FTP_PASSWORD_LITURGY }}
