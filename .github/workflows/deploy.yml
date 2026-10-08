@@ -2,6 +2,7 @@ name: Deploy to FTP
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -17,6 +18,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./site/
           server-dir: /public_html/sceptrade.com/
+          state-name: .ftp-deploy-sync-state-site.json
 
       - name: Deploy liturgy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -26,3 +28,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD_LITURGY }}
           local-dir: ./liturgy/
           server-dir: /public_html/mitakachurch.com/liturgy/
+          state-name: .ftp-deploy-sync-state-liturgy.json
