@@ -28,5 +28,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME_LITURGY }}
           password: ${{ secrets.FTP_PASSWORD_LITURGY }}
           local-dir: ./
-          server-dir: ./
+          server-dir: /public_html/liturgy.mitakachurch.com/
           state-name: .ftp-deploy-sync-state-liturgy.json
