@@ -1,22 +1,32 @@
-name: Deploy to Bluehost
+name: Deploy to FTP
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+
+      - name: Deploy site
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
           local-dir: ./
           server-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/original_songs/**
+          state-name: .ftp-deploy-sync-state-site.json
+
+      - name: Deploy liturgy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          protocol: ftps
+          server: ${{ secrets.FTP_SERVER_LITURGY }}
+          username: ${{ secrets.FTP_USERNAME_LITURGY }}
+          password: ${{ secrets.FTP_PASSWORD_LITURGY }}
+          local-dir: ./
+          server-dir: ./
+          state-name: .ftp-deploy-sync-state-liturgy.json
