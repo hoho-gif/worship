@@ -17,10 +17,10 @@ from urllib.request import urlopen
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/15zrUpKyzcz8PgqX7eBPxm0WnL_udhQ-Qy5A2PXBQ9v0/edit?usp=sharing"
 
 # 空欄ならURLのgidを使用（URLにもなければ先頭タブ）。タブを固定する場合はgidを指定
-spreadsheet_gid = ""
+spreadsheet_gid = "743073611"
 
 # 抽出を開始するシート上の行番号
-start_row = 2
+start_row = 47
 
 
 def load_public_sheet_rows(url, selected_gid, first_row):
@@ -54,13 +54,26 @@ def format_date_value(value):
         return value.strftime("%Y-%m-%d")
 
     date_text = str(value).strip()
-    for date_format in ("%Y-%m-%d", "%Y/%m/%d", "%Y.%m.%d", "%m/%d/%Y"):
+    match = re.match(r"^(\d{4})[-/.年](\d{1,2})(?:[-/.月])?(\d{1,2})日?", date_text)
+    if match:
+        try:
+            return datetime(*(int(part) for part in match.groups())).strftime("%Y-%m-%d")
+        except ValueError as error:
+            raise ValueError(f"日付の値が不正です：{date_text}") from error
+
+    for date_format in (
+        "%Y-%m-%d",
+        "%Y/%m/%d",
+        "%Y.%m.%d",
+        "%m/%d/%Y",
+        "%m-%d-%y",
+    ):
         try:
             return datetime.strptime(date_text, date_format).strftime("%Y-%m-%d")
         except ValueError:
             continue
 
-    return date_text
+    raise ValueError(f"日付をYYYY-MM-DDに変換できません：{date_text}")
 
 
 # ------------------------------------------
@@ -239,7 +252,11 @@ for row in sheet_rows:
     # 日付を文字列に変換
     # ======================================
 
-    date_string = format_date_value(date_value)
+    try:
+        date_string = format_date_value(date_value)
+    except ValueError as error:
+        print(error)
+        continue
 
 
     # ======================================
