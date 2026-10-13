@@ -1,18 +1,66 @@
+import csv
+import io
 import os
+import re
 import shutil
 from datetime import datetime
-from openpyxl import load_workbook
+from urllib.error import HTTPError, URLError
+from urllib.parse import parse_qs, urlparse
+from urllib.request import urlopen
 
 
 # ==========================================
 # 設定
 # ==========================================
 
-# Excelファイル
-excel_file = "礼拝奉仕ローテーション.xlsx"
+# Googleスプレッドシートの共有URL
+spreadsheet_url = "https://docs.google.com/spreadsheets/d/15zrUpKyzcz8PgqX7eBPxm0WnL_udhQ-Qy5A2PXBQ9v0/edit?usp=sharing"
 
-# Excelファイルのシート名
-excel_file_sheet = "2025.11.30-2026.11.22"
+# 空欄ならURLのgidを使用（URLにもなければ先頭タブ）。タブを固定する場合はgidを指定
+spreadsheet_gid = ""
+
+# 抽出を開始するシート上の行番号
+start_row = 2
+
+
+def load_public_sheet_rows(url, selected_gid, first_row):
+    parsed_url = urlparse(url)
+    match = re.search(r"/spreadsheets/d/([^/]+)", parsed_url.path)
+
+    if not match:
+        raise ValueError("Googleスプレッドシートの共有URLを設定してください。")
+
+    if first_row < 1:
+        raise ValueError("start_rowには1以上の行番号を指定してください。")
+
+    gid = selected_gid or parse_qs(parsed_url.query).get("gid", [None])[0]
+    if not gid and parsed_url.fragment:
+        gid = parse_qs(parsed_url.fragment).get("gid", [None])[0]
+    gid = gid or "0"
+
+    csv_url = (
+        f"https://docs.google.com/spreadsheets/d/{match.group(1)}"
+        f"/export?format=csv&gid={gid}"
+    )
+
+    with urlopen(csv_url, timeout=30) as response:
+        csv_text = response.read().decode("utf-8-sig")
+
+    return list(csv.reader(io.StringIO(csv_text)))[first_row - 1:]
+
+
+def format_date_value(value):
+    if isinstance(value, datetime):
+        return value.strftime("%Y-%m-%d")
+
+    date_text = str(value).strip()
+    for date_format in ("%Y-%m-%d", "%Y/%m/%d", "%Y.%m.%d", "%m/%d/%Y"):
+        try:
+            return datetime.strptime(date_text, date_format).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+
+    return date_text
 
 
 # ------------------------------------------
@@ -140,61 +188,43 @@ os.makedirs(
 
 
 # ==========================================
-# Excelを読み込む
+# 公開スプレッドシートを読み込む
 # ==========================================
 
 try:
-
-    wb = load_workbook(
-        excel_file,
-        data_only=True
+    sheet_rows = load_public_sheet_rows(
+        spreadsheet_url,
+        spreadsheet_gid,
+        start_row
     )
 
-    ws = wb[excel_file_sheet]
-
-
-except FileNotFoundError:
-
-    print(
-        f"Excelファイルが見つかりません：{excel_file}"
-    )
-
-    input("Enterキーを押して終了...")
-    exit()
-
-
-except KeyError:
-
-    print(
-        "指定したシートが見つかりません。"
-    )
+except (HTTPError, URLError, TimeoutError, UnicodeDecodeError, csv.Error, ValueError) as error:
+    print(f"公開スプレッドシートを読み込めません：{error}")
+    print("URLと「リンクを知っている全員が閲覧可」の共有設定を確認してください。")
 
     input("Enterキーを押して終了...")
     exit()
 
 
 # ==========================================
-# Excelを1行ずつ処理
+# スプレッドシートを1行ずつ処理
 # ==========================================
 
-for row in ws.iter_rows(
-    min_row=2,
-    values_only=True
-):
+for row in sheet_rows:
 
 
     # ======================================
     # B列 → 日付
     # ======================================
 
-    date_value = row[1]
+    date_value = row[1] if len(row) > 1 else ""
 
 
     # ======================================
     # Z列 → 詩篇・聖歌
     # ======================================
 
-    cell_value = row[25]
+    cell_value = row[25] if len(row) > 25 else ""
 
 
     # ======================================
@@ -209,20 +239,7 @@ for row in ws.iter_rows(
     # 日付を文字列に変換
     # ======================================
 
-    if isinstance(
-        date_value,
-        datetime
-    ):
-
-        date_string = date_value.strftime(
-            "%Y-%m-%d"
-        )
-
-    else:
-
-        date_string = str(
-            date_value
-        ).strip()
+    date_string = format_date_value(date_value)
 
 
     # ======================================
