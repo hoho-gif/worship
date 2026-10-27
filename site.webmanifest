@@ -1,0 +1,19 @@
+{
+  "name": "三鷹福音教会 礼拝式次",
+  "short_name": "礼拝式次",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "./logo_favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./logo_favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
