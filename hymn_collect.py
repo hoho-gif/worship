@@ -14,13 +14,13 @@ from urllib.request import urlopen
 # ==========================================
 
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/15zrUpKyzcz8PgqX7eBPxm0WnL_udhQ-Qy5A2PXBQ9v0/edit?usp=sharing"
-spreadsheet_gid = "1220907546"
+spreadsheet_gid = "743073611"
 start_row = 2
 
 psalm_source_folder = "psalm_jpg"
 hymn_source_folder = "hymn_jpg"
 
-# 列番号は0から数える: A列=0、Z列=25、AA列=26
+# 列番号は0から数える: A列=0、U列=20、V列=21、Z列=25、AA列=26
 date_column_index = 0
 collections = [
 	(20, "song1", True, "psalm"),
