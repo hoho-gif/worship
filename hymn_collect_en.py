@@ -12,7 +12,8 @@ from urllib.parse import urlencode
 DRIVE_FOLDER_ID = "1BARDuH3SPRbd0nvwWwO-9nQ-opy-obfC"
 PDF_NAME_PATTERN = re.compile(r"^(?P<date>\d{8})_reihai_somgs_eng\.pdf$", re.IGNORECASE)
 START_DATE = "20261122"
-RENDER_DPI = 200
+RENDER_DPI = 300
+JPEG_QUALITY = 100
 REQUEST_TIMEOUT = 30
 
 BASE_FOLDER = Path(__file__).resolve().parent
@@ -135,8 +136,20 @@ def convert_pdf(pdf_data, song1_path, song2_path, pymupdf, image_module):
         document.close()
 
     try:
-        left_image.save(song1_path, "JPEG", quality=95)
-        right_image.save(song2_path, "JPEG", quality=95)
+        left_image.save(
+            song1_path,
+            "JPEG",
+            quality=JPEG_QUALITY,
+            subsampling=0,
+            dpi=(RENDER_DPI, RENDER_DPI),
+        )
+        right_image.save(
+            song2_path,
+            "JPEG",
+            quality=JPEG_QUALITY,
+            subsampling=0,
+            dpi=(RENDER_DPI, RENDER_DPI),
+        )
     finally:
         left_image.close()
         right_image.close()
