@@ -23,8 +23,8 @@ hymn_source_folder = "hymn_jpg"
 # 列番号は0から数える: A列=0、Z列=25、AA列=26
 date_column_index = 0
 collections = [
-	(20, "song1", False),
-	(21, "song2", True),
+	(20, "song1", True, "psalm"),
+	(21, "song2", True, "hymn"),
 ]
 
 
@@ -107,7 +107,7 @@ def normalize_for_match(text):
 	return re.sub(r"\d+", lambda match: str(int(match.group())), text)
 
 
-for _, destination_folder, _ in collections:
+for _, destination_folder, _, _ in collections:
 	os.makedirs(destination_folder, exist_ok=True)
 
 
@@ -130,8 +130,8 @@ for row in sheet_rows:
 		continue
 
 	row_collections = [
-		(row[column_index], destination_folder, ignore_leading_zeroes)
-		for column_index, destination_folder, ignore_leading_zeroes in collections
+		(row[column_index], destination_folder, ignore_leading_zeroes, collection_type)
+		for column_index, destination_folder, ignore_leading_zeroes, collection_type in collections
 		if len(row) > column_index and row[column_index]
 	]
 	if not row_collections:
@@ -143,7 +143,7 @@ for row in sheet_rows:
 		print(error)
 		continue
 
-	for cell_value, destination_folder, ignore_leading_zeroes in row_collections:
+	for cell_value, destination_folder, ignore_leading_zeroes, collection_type in row_collections:
 		cell_text = str(cell_value).strip()
 
 		txt_file_path = os.path.join(destination_folder, f"{date_string}.txt")
@@ -154,19 +154,18 @@ for row in sheet_rows:
 		print(f"TXTファイル作成：{txt_file_path}")
 		print(f"  内容：{cell_text}")
 
-		if cell_text.startswith(("詩篇", "詩編")):
+		if collection_type == "psalm":
 			extracted_name = extract_psalm_name(cell_text)
 			source_folder = psalm_source_folder
 			search_name = "psalm" + extracted_name
 			file_type = "詩篇"
-		elif cell_text.startswith("聖歌"):
+		elif collection_type == "hymn":
 			extracted_name = extract_hymn_name(cell_text)
 			source_folder = hymn_source_folder
 			search_name = "hymn_" + extracted_name
 			file_type = "聖歌"
 		else:
-			print(f"【種類不明】{cell_text}")
-			continue
+			raise ValueError(f"collectionsの種類設定が不正です：{collection_type}")
 
 		if not extracted_name:
 			print(f"{file_type}番号を抽出できませんでした：{cell_text}")
