@@ -20,10 +20,11 @@ start_row = 2
 psalm_source_folder = "psalm_jpg"
 hymn_source_folder = "hymn_jpg"
 
-# 列番号は0から数える: Z列=25、AA列=26
+# 列番号は0から数える: A列=0、Z列=25、AA列=26
+date_column_index = 0
 collections = [
-	(25, "song1", False),
-	(26, "song2", True),
+	(20, "song1", False),
+	(21, "song2", True),
 ]
 
 
@@ -124,7 +125,7 @@ except (HTTPError, URLError, TimeoutError, UnicodeDecodeError, csv.Error, ValueE
 
 
 for row in sheet_rows:
-	date_value = row[1] if len(row) > 1 else ""
+	date_value = row[date_column_index] if len(row) > date_column_index else ""
 	if not date_value:
 		continue
 
